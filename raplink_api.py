@@ -3,10 +3,11 @@ from flask_cors import CORS, cross_origin
 
 import collector.collector as collector
 import collector.neo4jDriver as neo4jDriver
+import os
 
 app = Flask(__name__)
 CORS(app)
-driver = neo4jDriver.Neo4jDriver("bolt://ec2-52-10-102-229.us-west-2.compute.amazonaws.com:7687", "neo4j", "test")
+driver = neo4jDriver.Neo4jDriver(os.environ["NEO4J_PATH"], os.environ["NEO4J_USER"], os.environ["NEO4J_PASSWORD"])
 
 @app.route('/raplink/api/v1.0/link', methods=['GET'])
 def crawl():

@@ -1,3 +1,4 @@
+import os
 import requests
 import urllib
 import sys
@@ -14,7 +15,7 @@ class Collector:
         self.spotifyApiSearch = self.spotifyApiBase + "search?q="
         self.spotifyApiArtist = self.spotifyApiBase + "artists/"
         self.spotifyApiAlbum = self.spotifyApiBase + "albums/"
-        self.graphDbDriver = neo4jDriver.Neo4jDriver("bolt://ec2-52-10-102-229.us-west-2.compute.amazonaws.com:7687", "neo4j", "test")
+        self.graphDbDriver = neo4jDriver.Neo4jDriver(os.environ['NEO4J_PATH'], os.environ['NEO4J_USER'], os.environ['NEO4J_PASSWORD'])
         self.artistStack = []
 
     def initiateCrawl(self, artistSeed):
