@@ -1,7 +1,5 @@
 import collector
 
 collector = collector.Collector()
-collector.initiateCrawl("Cash Cash")
-collector.initiateCrawl("Diddy")
-collector.initiateCrawl("Pusha T")
-collector.initiateCrawl("YG")
+collector.initiateCrawl("Macklemore & Ryan Lewis")
+collector.initiateCrawl("Dr. Dre")
