@@ -5,8 +5,8 @@ import collector.collector as collector
 import collector.neo4jDriver as neo4jDriver
 import os
 
-app = Flask(__name__)
-CORS(app)
+application = Flask(__name__)
+CORS(application)
 driver = neo4jDriver.Neo4jDriver(os.environ["NEO4J_PATH"], os.environ["NEO4J_USER"], os.environ["NEO4J_PASSWORD"])
 
 @app.route('/raplink/api/v1.0/link', methods=['GET'])
@@ -28,4 +28,4 @@ def typeahead():
 
 
 if __name__ == "__main__":
-    app.run()
+    application.run()
