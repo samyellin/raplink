@@ -1,6 +1,7 @@
 import os
 import requests
 import urllib
+import base64
 import sys
 from sets import Set
 import artist
@@ -11,12 +12,20 @@ import neo4jDriver
 class Collector:
 
     def __init__(self):
+        self.spotifyAuthorizationUrl = "https://accounts.spotify.com/api/token"
         self.spotifyApiBase = "https://api.spotify.com/v1/"
         self.spotifyApiSearch = self.spotifyApiBase + "search?q="
         self.spotifyApiArtist = self.spotifyApiBase + "artists/"
         self.spotifyApiAlbum = self.spotifyApiBase + "albums/"
+        self.spotifyClientId = os.environ['SPOTIFY_CLIENT_ID']
+        self.spotifyClientSecret = os.environ['SPOTIFY_CLIENT_SECRET']
         self.graphDbDriver = neo4jDriver.Neo4jDriver(os.environ['NEO4J_PATH'], os.environ['NEO4J_USER'], os.environ['NEO4J_PASSWORD'])
         self.artistStack = []
+
+    def getSpotifyAuthenticationToken(self):
+        authorizationHeader = {'Authorization':'Basic ' + base64.b64encode(self.spotifyClientId + ':' + self.spotifyClientSecret)}
+        r = requests.post(self.spotifyAuthorizationUrl, data={'grant_type': 'client_credentials'}, headers=authorizationHeader)
+        return r.json()['access_token']
 
     def initiateCrawl(self, artistSeed):
         initialArtist = self.getSeedArtist(artistSeed)
@@ -26,10 +35,11 @@ class Collector:
         self.discover()
 
     def getSeedArtist(self, artistSeed):
+        accessToken = self.getSpotifyAuthenticationToken()
+        headers = {'Authorization': 'Bearer ' + accessToken}
         encodedArtistSeed = urllib.quote_plus(artistSeed)
         search = self.spotifyApiSearch + encodedArtistSeed + "&type=artist"
-
-        r = requests.get(search)
+        r = requests.get(search, headers = headers)
         seedArtistJson = r.json()
         seedArtistId = seedArtistJson['artists']['items'][0]['id']
         newArtist = self.getArtistFromSpotifyId(seedArtistId)
@@ -37,7 +47,9 @@ class Collector:
 
     def getArtistFromSpotifyId(self, spotifyId):
         artistUrl = self.spotifyApiArtist + spotifyId
-        r = requests.get(artistUrl)
+        accessToken = self.getSpotifyAuthenticationToken()
+        headers = {'Authorization': 'Bearer ' + accessToken}
+        r = requests.get(artistUrl, headers=headers)
         artistJson = r.json()
         newArtist = self.constructArtistFromSpotifyJson(artistJson)
         albums = self.getArtistAlbums(newArtist)
@@ -48,7 +60,9 @@ class Collector:
         artistSpotifyId = selectedArtist.spotifyId
         spotifyApiArtistAlbumsUrl = self.spotifyApiArtist + artistSpotifyId + "/albums"
         try:
-            r = requests.get(spotifyApiArtistAlbumsUrl)
+            accessToken = self.getSpotifyAuthenticationToken()
+            headers = {'Authorization': 'Bearer ' + accessToken}
+            r = requests.get(spotifyApiArtistAlbumsUrl, headers = headers)
             artistAlbumsJson = r.json()
             artistAlbums = self.constructAlbumsFromSpofityJson(artistAlbumsJson)
         except:
@@ -94,8 +108,10 @@ class Collector:
         return tracks
 
     def getTracksForAlbum(self, currAlbum):
+        accessToken = self.getSpotifyAuthenticationToken()
+        headers = {'Authorization': 'Bearer ' + accessToken}
         trackUrl = self.spotifyApiAlbum + currAlbum.spotifyId
-        r = requests.get(trackUrl)
+        r = requests.get(trackUrl, headers=headers)
         tracksJson = r.json()
         albumTracks = self.constructTracksFromSpotifyJson(tracksJson)
         return albumTracks

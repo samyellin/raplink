@@ -19,6 +19,23 @@ class Neo4jDriver:
 
         return spotifyId
 
+    def typeahead(self, text):
+        session = self.driver.session()
+        result = session.run("MATCH (a:Artist) WHERE a.name =~ {text} RETURN a ORDER BY a.popularity DESC LIMIT 5",
+                                {"text": text + ".*"})
+
+        artists = []
+        for node in result:
+            properties = node['a'].properties
+            artists.append(properties['name'])
+
+        return jsonpickle.encode(artists)
+
+
+
+
+
+
     def wasArtistVisited(self, targetArtist):
         session = self.driver.session()
 

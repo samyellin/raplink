@@ -11,7 +11,6 @@ driver = neo4jDriver.Neo4jDriver(os.environ["NEO4J_PATH"], os.environ["NEO4J_USE
 
 @app.route('/raplink/api/v1.0/link', methods=['GET'])
 def crawl():
-
     startArtist = request.args.get("start")
     endArtist = request.args.get("end")
 
@@ -20,6 +19,13 @@ def crawl():
     shortestPath = driver.getShortestPath(spotifyCollector.getSeedArtist(startArtist), spotifyCollector.getSeedArtist(endArtist))
 
     return shortestPath
+
+@app.route('/raplink/api/v1.0/typeahead', methods=['GET'])
+def typeahead():
+    artist = request.args.get("artist")
+
+    return driver.typeahead(artist)
+
 
 if __name__ == "__main__":
     app.run()

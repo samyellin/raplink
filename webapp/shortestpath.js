@@ -12,46 +12,27 @@ function getShortestPath() {
         var path = JSON.parse(result);
         var nodes = new Array();
         var tracks = new Array();
-        path.forEach(function(relationship) {
-          var node = new Object();
-          var check = 0;
-          node.name=relationship.startArtist.name;
-          node.spotifyId = relationship.startArtist.spotifyId;
-          for (var i = 0;i<nodes.length;++i){
-            if (nodes[i].spotifyId == node.spotifyId){
-              check = 1;
-            }
-          }
-          if (check == 0) { nodes.push(node);}
+        $("#playlist").empty();
 
-          node = new Object();
-          check = 0;
-          node.name=relationship.endArtist.name;
-          node.spotifyId = relationship.endArtist.spotifyId;
-          for (var i = 0;i<nodes.length;++i){
-            if (nodes[i].spotifyId == node.spotifyId){
-              check = 1;
-            }
-          }
-          if (check == 0) { nodes.push(node);}
+        path.forEach(function(relationship) {
+          var startArtist = new Object();
+          startArtist.name=relationship.startArtist.name;
+          startArtist.spotifyId = relationship.startArtist.spotifyId;
+
+
+          var endArtist = new Object();
+          endArtist.name=relationship.endArtist.name;
+          endArtist.spotifyId = relationship.endArtist.spotifyId;
 
           var track = new Object();
           track.name = relationship.connectingTrack.name;
           track.spotifyId = relationship.connectingTrack.spotifyId;
 
-          tracks.push(track);
-        })
-
-        $("#playlist").empty();
-        if (tracks.length == 0) {
-          $("#playlist").append("<p>No link found.</p>");
-          return;
-        }
-
-        tracks.forEach(function(track) {
+          var linkMessage = '<p>' + startArtist.name + ' <i class="fa fa-arrow-right" aria-hidden="true"></i> ' + endArtist.name + '</p>'
           var spotifyPlayer = '<iframe src="https://open.spotify.com/embed?uri=spotify:track:' + track.spotifyId + '" width="300" height="80" frameborder="0" allowtransparency="true"></iframe><br>';
-          $("#playlist").append(spotifyPlayer);
+          $("#playlist").append(linkMessage + spotifyPlayer);
         })
+
     },
     error: function() {
       $("#playlist").empty();
