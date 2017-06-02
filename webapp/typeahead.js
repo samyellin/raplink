@@ -1,7 +1,7 @@
 $(function() {
   $( "#start" ).autocomplete({
     source: function( request, response ) {
-      var typeaheadUrl = 'http://127.0.0.1:5000/raplink/api/v1.0/typeahead?artist=' + encodeURI($("#start").val());
+      var typeaheadUrl = 'http://flask-env.unrhcrvngy.us-west-2.elasticbeanstalk.com/raplink/api/v1.0/typeahead?artist=' + encodeURI($("#start").val());
       $.ajax({
         url: typeaheadUrl,
         success: function( data ) {

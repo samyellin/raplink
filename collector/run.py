@@ -1,6 +1,7 @@
 import collector
 
 collector = collector.Collector()
-collector.initiateCrawl("D.R.A.M.")
-collector.initiateCrawl("James Blunt")
-collector.initiateCrawl("MGMT")
+collector.initiateCrawl("Grey")
+collector.initiateCrawl("DJ Mustard")
+collector.initiateCrawl("Ludwig van Beethoven")
+collector.initiateCrawl("Alesso")
