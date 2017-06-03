@@ -2,7 +2,7 @@ function getShortestPath() {
   var startArtist = $('#start').val();
   var endArtist = $('#end').val();
 
-  var pathUrl = 'https://flask-env.unrhcrvngy.us-west-2.elasticbeanstalk.com/raplink/api/v1.0/link?start=' + encodeURI(startArtist) + '&end=' + encodeURI(endArtist);
+  var pathUrl = 'http://flask-env.unrhcrvngy.us-west-2.elasticbeanstalk.com/raplink/api/v1.0/link?start=' + encodeURI(startArtist) + '&end=' + encodeURI(endArtist);
 
   $("#playlist").empty();
   $("#playlist").append('<i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>')
