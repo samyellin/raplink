@@ -154,7 +154,5 @@ class Neo4jDriver:
                 hydratedPath.append(newRelationship)
                 sequence += 1
 
-        for link in hydratedPath:
-            print "Start: " + link.startArtist.name + " End: " + link.endArtist.name + " Track: " + link.connectingTrack.name
         pathJson = jsonpickle.encode(hydratedPath)
         return pathJson
