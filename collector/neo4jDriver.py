@@ -24,17 +24,30 @@ class Neo4jDriver:
         result = session.run("MATCH (a:Artist) WHERE a.name =~ {text} RETURN a ORDER BY a.popularity DESC LIMIT 5",
                                 {"text": text + ".*"})
 
+        session.close()
+
         artists = []
         for node in result:
             properties = node['a'].properties
-            artists.append(properties['name'])
+            isConnected = self.isArtistConnected(properties['spotifyId'])
+
+            artists.append({"spotifyId": properties['spotifyId'], "name": properties['name'], "connected": isConnected})
 
         return jsonpickle.encode(artists)
 
 
+    def isArtistConnected(self, targetArtistId):
+        session = self.driver.session()
+        result = session.run("MATCH (a:Artist)-[t:track]-() WHERE a.spotifyId = {spotifyId} RETURN COUNT (t)",
+                                {"spotifyId": targetArtistId})
+        session.close()
 
+        connections = result.single()['COUNT (t)']
 
+        if (connections > 0):
+            return True
 
+        return False
 
     def wasArtistVisited(self, targetArtist):
         session = self.driver.session()
@@ -118,12 +131,12 @@ class Neo4jDriver:
         newTrack = track.Track(spotifyId, name)
         return newTrack
 
-    def getShortestPath(self, startArtist, endArtist):
+    def getShortestPath(self, startArtistId, endArtistId):
 
         session = self.driver.session()
 
         result = session.run("MATCH (a:Artist {spotifyId: {startId}}), (b:Artist {spotifyId: {endId}}), p=shortestpath((a)-[*..15]-(b)) RETURN p",
-                                {"startId": startArtist.spotifyId, "endId":endArtist.spotifyId})
+                                {"startId": startArtistId, "endId":endArtistId})
 
         session.close()
 
