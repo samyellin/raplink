@@ -2,6 +2,27 @@ function getShortestPath() {
   var startArtistId = $('#start').data("spotifyId");
   var endArtistId = $('#end').data("spotifyId");
 
+  if (!endArtistId || !startArtistId) {
+    if (!endArtistId) {
+      $('#end').val("");
+      $('#end-field').removeClass("input--filled")
+    }
+
+    if (!startArtistId) {
+      $('#start').val("");
+      $('#start-field').removeClass("input--filled")
+    }
+    return;
+  }
+
+  if (endArtistId == startArtistId) {
+    var uniqueMessage = '<p>Artists must be different.</p>';
+    $("#playlist").append(uniqueMessage);
+    return;
+  }
+
+
+
   var pathUrl = 'http://flask-env.unrhcrvngy.us-west-2.elasticbeanstalk.com/raplink/api/v1.0/link?start=' + encodeURI(startArtistId) + '&end=' + encodeURI(endArtistId);
 
   $("#playlist").empty();
@@ -35,7 +56,7 @@ function getShortestPath() {
           track.spotifyId = relationship.connectingTrack.spotifyId;
 
           var linkMessage = '<p>' + startArtist.name + ' <i class="fa fa-arrow-right" aria-hidden="true"></i> ' + endArtist.name + '</p>'
-          var spotifyPlayer = '<iframe src="https://open.spotify.com/embed?uri=spotify:track:' + track.spotifyId + '" width="300" height="80" frameborder="0" allowtransparency="true"></iframe><br>';
+          var spotifyPlayer = '<iframe src="https://open.spotify.com/embed?uri=spotify:track:' + track.spotifyId + '" width="600" height="80" frameborder="0" allowtransparency="true"></iframe><br>';
           $("#playlist").append(linkMessage + spotifyPlayer);
         })
 

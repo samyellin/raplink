@@ -8,7 +8,7 @@ $(function() {
       connectedIcon = '<i class="fa fa-window-close" aria-hidden="true"></i>'
     }
     return $( "<li>" )
-      .append( "<div>" + item.name + " " + connectedIcon + "</div>")
+      .append( '<div class=typeahead-item>' + item.name + " " + connectedIcon + "</div>")
       .appendTo( ul );
   };
 
@@ -24,7 +24,9 @@ $(function() {
     },
     select: function( event, ui ) {
       $( "#start" ).val( ui.item.name );
-      $( "#start" ).data("spotifyId", ui.item.spotifyId)
+      $( "#start" ).data("spotifyId", ui.item.spotifyId);
+      $( "#start-field" ).addClass("input--filled");
+      getShortestPath();
       return false;
     },
     minLength: 1
@@ -43,10 +45,31 @@ $(function() {
     },
     select: function( event, ui ) {
       $( "#end" ).val( ui.item.name );
-      $( "#end" ).data("spotifyId", ui.item.spotifyId)
+      $( "#end" ).data("spotifyId", ui.item.spotifyId);
+      $( "#end-field" ).addClass("input--filled");
+      getShortestPath();
       return false;
     },
     minLength: 1
   })
   .autocomplete( "instance" )._renderItem = typeaheadResultHandler;
+
+  // Detectors on input
+  $("#start").change(function(){
+    if ($("#start").data("spotifyId") && $("#start").data("spotifyId") != "" && $("#start").val() != "") {
+      $("#start-field").addClass("input--filled");
+    } else {
+      $("#start").val("")
+      $('#start').data("spotifyId", "");
+      $("#start-field").removeClass("input--filled");
+    }
+  })
+  $("#end").change(function(){
+    if ($("#end").data("spotifyId") && $("#end").data("spotifyId") != "" && $("#end").val() != "") {
+      $("#end-field").addClass("input--filled");
+    } else {
+      $("#end").val("")
+      $("#end-field").removeClass("input--filled");
+    }
+  })
 });
