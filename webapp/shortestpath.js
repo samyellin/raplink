@@ -14,6 +14,11 @@ function getShortestPath() {
         var tracks = new Array();
         $("#playlist").empty();
 
+        if (path.length = 0) {
+          var emptyMessage = '<p>No link found.</p>';
+          $("#playlist").append(emptyMessage);
+          return;
+        }
         path.forEach(function(relationship) {
           var startArtist = new Object();
           startArtist.name=relationship.startArtist.name;
@@ -32,6 +37,7 @@ function getShortestPath() {
           var spotifyPlayer = '<iframe src="https://open.spotify.com/embed?uri=spotify:track:' + track.spotifyId + '" width="300" height="80" frameborder="0" allowtransparency="true"></iframe><br>';
           $("#playlist").append(linkMessage + spotifyPlayer);
         })
+
 
     },
     error: function() {

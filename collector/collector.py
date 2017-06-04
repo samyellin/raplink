@@ -138,9 +138,9 @@ class Collector:
                         if (self.graphDbDriver.isArtistInGraph(currTrackArtist) is False):
                             print("Creating Artist: " + currTrackArtist.name)
                             self.graphDbDriver.createArtistNode(currTrackArtist)
-                            if (currTrackArtist.popularity > 70):
+                            if (currTrackArtist.popularity > 40):
                                 self.addArtistToStack(currTrackArtist)
-                        if (currTrackArtist.popularity > 70 and (self.graphDbDriver.wasArtistVisited(currTrackArtist) is False)):
+                        if (currTrackArtist.popularity > 40 and (self.graphDbDriver.wasArtistVisited(currTrackArtist) is False)):
                             self.addArtistToStack(currTrackArtist)
 
                         for targetArtist in currTrack.artists:
