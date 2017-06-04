@@ -21,9 +21,6 @@ function getShortestPath() {
     return;
   }
 
-  $('#start').data("spotifyId", "");
-  $('#end').data("spotifyId", "");
-
   var pathUrl = 'http://flask-env.unrhcrvngy.us-west-2.elasticbeanstalk.com/raplink/api/v1.0/link?start=' + encodeURI(startArtistId) + '&end=' + encodeURI(endArtistId);
 
   $("#playlist").empty();
