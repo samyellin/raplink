@@ -9,12 +9,21 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://use.fontawesome.com/a8141856af.js"></script>
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
-  <script src="classie.js"></script>
   <script type="text/javascript" src="shortestpath.js"></script>
   <script type="text/javascript" src="typeahead.js"></script>
+  <script type="text/javascript" src="howto.js"></script>
 </head>
 <body>
     <h1>SoundLink</h1>
+    <a href="" id="show-usage">Getting Started</a>
+    <div id="usage">
+      <h4>How to Use SoundLink</h4>
+      <p>Just start typing the name of your artist into the search boxes.  When you see your artist come up, select them from the menu.  Once you have selected a starting and ending artist, SoundLink will automatically do the rest.</p>
+      <p>If your artist has a check mark next to their name, that means they have at least one connection to another artist.  However, if the artist has an 'X' next to their name, that means they have no collaborations in our database, and any attempts to link them will be unsuccessful.</p>
+
+      <h4>The artist I am looking for is not coming up.</h4>
+      <p>SoundLink uses a discovery algorithm to find new artists, and is constantly adding more to the database.  However, there is always the chance that your artist has not collaborated with anyone else, and thus will never be in the database.  This occurs most often with rock bands who have done all their music on their own.</p> 
+    </div>
     <div id="artist-select">
       <section class="content">
         <span class="input input--yoshiko" id="start-field">
@@ -32,5 +41,4 @@
       </section>
     </div>
     <div id="playlist"></div>
-
 </body>
