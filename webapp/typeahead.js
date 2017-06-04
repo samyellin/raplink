@@ -10,7 +10,7 @@ $(function() {
     return $( "<li>" )
       .append( "<div>" + item.name + " " + connectedIcon + "</div>")
       .appendTo( ul );
-  }
+  };
 
   $( "#start" ).autocomplete({
     source: function( request, response ) {
