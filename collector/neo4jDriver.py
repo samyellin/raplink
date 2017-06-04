@@ -9,6 +9,13 @@ class Neo4jDriver:
     def __init__(self, driver, neo4j_username, neo4j_password):
         self.driver = GraphDatabase.driver(driver, auth=basic_auth(neo4j_username, neo4j_password))
 
+    def increaseLinkCount(self):
+        session = self.driver.session()
+
+        session.run("MATCH (c:Counter) WHERE c.counterId = 1 SET c.count = c.count + 1")
+
+        session.close()
+
     def createArtistNode(self, newArtist):
         session = self.driver.session()
 
@@ -166,6 +173,9 @@ class Neo4jDriver:
 
                 hydratedPath.append(newRelationship)
                 sequence += 1
+
+
+        self.increaseLinkCount()
 
         pathJson = jsonpickle.encode(hydratedPath)
         return pathJson
