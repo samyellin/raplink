@@ -29,7 +29,7 @@ class Neo4jDriver:
     def typeahead(self, text):
         session = self.driver.session()
         result = session.run("MATCH (a:Artist) WHERE a.name =~ {text} RETURN a ORDER BY a.popularity DESC LIMIT 5",
-                                {"text": text + ".*"})
+                                {"text": "(?i)" + text + ".*"})
 
         session.close()
 
