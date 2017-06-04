@@ -14,11 +14,12 @@ function getShortestPath() {
         var tracks = new Array();
         $("#playlist").empty();
 
-        if (path.length = 0) {
+        if (path.length == 0) {
           var emptyMessage = '<p>No link found.</p>';
           $("#playlist").append(emptyMessage);
           return;
         }
+        
         path.forEach(function(relationship) {
           var startArtist = new Object();
           startArtist.name=relationship.startArtist.name;
