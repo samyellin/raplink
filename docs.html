@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Cormorant+Garamond:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+  <script src="https://use.fontawesome.com/a8141856af.js"></script>
+  <link rel="stylesheet" href="webapp/soundlink.css">
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <h1>SoundLink</h1>
+  <a href="webapp/index.html">Web App</a>
+
+  <h2>Under the Hood</h2>
+  <p>SoundLink uses a neo4j graph database to quickly find the shortest path between two artists.  Each artist is represented by a node in the graph, and the songs are the connecting edges.</p>
+  <h2>The Data</h2>
+  <p>New artists are constantly being added to the database.  SoundLink leverages the Spotify API to discover collaborations for the current artist.  Artists that are discovered as collaborators from that artist are added to a stack to be processed.</p>
+  <h2>API Documentation</h2>
+  <p>SoundLink has two easy-to-use endpoints.  The first is a typeahead prediction endpoint, and the second the endpoint to link two artists.
+  <p>Base URL: </p>
+  <p>/raplink/api/v1.0 ***note: You may be wondering why 'raplink shows up here.  That was originally the name of the application. One day I'll get around to changing it.</p>
+
+  <h3>Link</h3>
+  <h4>URL</h4>
+  <p>/link</p>
+  <h4>HTTP Type</h4>
+  <p>GET</p>
+  <h4>Parameters</h4>
+  <p>This endpoint takes two parameters: "start" and "end".  They should take the value of the spotifyId of the artists to be linked.
+
+  <h3>Typeahead</h3>
+  <h4>URL</h4>
+  <p>/typeahead</p>
+  <h4>HTTP Type</h4>
+  <p>GET</p>
+  <h4>Parameters</h4>
+  <p>This endpoint takes one parameter: "artist".  The value should be whatever the user is currently typing into the search box.</p>
+  
+</body>
